@@ -54,52 +54,101 @@ interface InternalOptions {
 
 ## Other Component models
 
-### (Template to copy)
+### Snabbdom 0.7.4
+
+#### VNode shape
+
+* `sel: string`: CSS selector passed to h() during creation to create the DOM node
+* `data: object`: The place to add information for modules to access and manipulate the real DOM element when it is created
+* `children: Vnode[]`: An Array of virtual nodes that should be added as children of the parent DOM node upon creation.
+* `text: string`: This property is created when a virtual node is created with only a single child that possesses text and only requires document.createTextNode() to be used.
+* `elm: Element`: A pointer to the real DOM node created by snabbdom.
+* `key: string | number`: Used to keep pointers to DOM nodes that existed previously to avoid recreating them if it is unnecessary.
 
 #### Mounting lifecycles
 
 <dl>
-  <dt><code>onMount</code></dt>
+  <dt><code>init</code></dt>
   <dd>
-    Schedules a callback to run as soon as the component has been mounted to the DOM. Can return a function to be called on unmount
+    A vnode has been added. Available on vnodes only. Args: <code>(vnode)</code>
+  </dd>
+  
+  <dt><code>create</code></dt>
+  <dd>
+    A DOM element has been created based on a vnode. Available on module and vnodes. Args: <code>(emptyVnode, vnode)</code>
+  </dd>
+  
+  <dt><code>insert</code></dt>
+  <dd>
+    An element has been inserted into the DOM. Available on vnodes only. Args: <code>(vnode)</code>
   </dd>
 </dl>
 
 #### Updating lifecycles
 
 <dl>
-  <dt><code>beforeUpdate</code></dt>
+  <dt><code>pre</code></dt>
   <dd>
-    Schedules a callback to run immediately before the component is updated after any state change.
+    The patch process begins. Available at module scope only. Args: <code>()</code>
   </dd>
   
-  <dt><code>afterUpdate</code></dt>
+  <dt><code>prepatch</code></dt>
   <dd>
-    Schedules a callback to run immediately after the component has been updated.
+    An element is about to be patched. Available on vnodes only. Args: <code>(oldVnode, vnode)</code>
+  </dd>
+  
+  <dt><code>update</code></dt>
+  <dd>
+    An element is being updated. Available on module-scope and vnodes. Args: <code>(oldVnode, vnode)</code>
+  </dd>
+  
+  <dt><code>postpatch</code></dt>
+  <dd>
+    An element has been patched. Available on vnodes only. Args: <code>(oldVnode, vnode)</code>
+  </dd>
+  
+  <dt><code>post</code></dt>
+  <dd>
+    The patch process is done. Available on module-scope only. Args: <code>()</code>
   </dd>
 </dl>
 
 #### Destroy lifecycles
 
 <dl>
-  <dt><code>onDestroy</code></dt>
+  <dt><code>destroy</code></dt>
   <dd>
-    Schedules a callback to run once the component is unmounted.
+    An element is directly or indirectly being removed. Available on module-scope and vnodes. Args: <code>(vnode)</code>
+  </dd>
+  
+  <dt><code>remove</code></dt>
+  <dd>
+    An element is directly being removed from the DOM. Available on module-scope and vnodes. Args: <code>(vnode, removeCallback)</code>
   </dd>
 </dl>
 
 #### Error handling
 
+Manually through `try/catch` around root `patch` call. No component level `try/catch` natively supported.
+
 #### Update methods
+
+Requires re-rendering the app from the top.
 
 #### Context API
 
+Manually through global variables.
+
 #### Direct DOM Access
+
+Access through `vnode.elm` property in lifecycle hooks.
 
 #### Other APIs
 
+* Animations with style delay/remove/destroy api
+* component memoization with `thunk`
 
-### Svelte
+### Svelte 3
 
 Reversed engineered looking compiler output of various examples on Svelte website: (e.g. 7guis-crud, Lifecycle examples, )
 
@@ -172,7 +221,7 @@ Other Internal Lifecycles:
 - `i`: in (for transitioning in components)
 - `o`: out (for transitioning out components)
 
-### React
+### React 16
 
 Two-phase render: (1) render, (2) commit phases.
 
@@ -231,7 +280,7 @@ Two-phase render: (1) render, (2) commit phases.
 - Lazy loading through `Suspense`, `lazy`
 - Delay rendering update with `useTransition`
 
-### Angular
+### Angular 9
 
 Mostly taken from https://angular.io/guide/lifecycle-hooks
 
@@ -307,7 +356,7 @@ Uses dependency injection pattern for this I think?
 - Observables
 - Style encapsulation
 
-### Vue
+### Vue 2
 
 Mostly taken from https://angular.io/guide/lifecycle-hooks
 
