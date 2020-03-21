@@ -42,6 +42,16 @@ interface InternalOptions {
 }
 ```
 
+## Sample extensions to validate component model
+
+- [Class component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/component.js#L13)
+- [Function component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/diff/index.js#L450)
+- [Hooks API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/hooks/src/index.js)
+- [Composition API components](https://github.com/preactjs/preact/pull/1923)
+- [Flow components](https://github.com/jviide/flowponent)
+- Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/hero.ts))
+- Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
+
 ## Other Component models
 
 ### (Template to copy)
