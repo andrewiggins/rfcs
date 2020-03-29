@@ -5,7 +5,11 @@ Libraries to look at:
 - [inferno](https://www.npmjs.com/package/inferno)
 - [petit-dom](https://www.npmjs.com/package/petit-dom)
 - [hyperhtml](https://www.npmjs.com/package/hyperhtml)
-- [snabbdom](https://www.npmjs.com/package/snabbdom)
+
+Others to consider:
+
+- [vue-next](https://github.com/vuejs/vue-next)
+- [domdiff](https://github.com/WebReflection/domdiff/blob/master/esm/index.js)
 
 Today's options
 
@@ -51,6 +55,8 @@ interface InternalOptions {
 - [Flow components](https://github.com/jviide/flowponent)
 - Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/hero.ts))
 - Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
+- Consider experimenting if refs can be added as an extension
+- Controlled inputs (another, perhaps better? implementation would be to improve `options.event` callback)
 
 ## Other Component models
 
