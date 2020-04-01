@@ -64,12 +64,12 @@ interface InternalOptions {
 
 #### VNode shape
 
-* `sel: string`: CSS selector passed to h() during creation to create the DOM node
-* `data: object`: The place to add information for modules to access and manipulate the real DOM element when it is created
-* `children: Vnode[]`: An Array of virtual nodes that should be added as children of the parent DOM node upon creation.
-* `text: string`: This property is created when a virtual node is created with only a single child that possesses text and only requires document.createTextNode() to be used.
-* `elm: Element`: A pointer to the real DOM node created by snabbdom.
-* `key: string | number`: Used to keep pointers to DOM nodes that existed previously to avoid recreating them if it is unnecessary.
+- `sel: string`: CSS selector passed to h() during creation to create the DOM node
+- `data: object`: The place to add information for modules to access and manipulate the real DOM element when it is created
+- `children: Vnode[]`: An Array of virtual nodes that should be added as children of the parent DOM node upon creation.
+- `text: string`: This property is created when a virtual node is created with only a single child that possesses text and only requires document.createTextNode() to be used.
+- `elm: Element`: A pointer to the real DOM node created by snabbdom.
+- `key: string | number`: Used to keep pointers to DOM nodes that existed previously to avoid recreating them if it is unnecessary.
 
 #### Mounting lifecycles
 
@@ -151,12 +151,25 @@ Access through `vnode.elm` property in lifecycle hooks.
 
 #### Other APIs
 
-* Animations with style delay/remove/destroy api
-* component memoization with `thunk`
+- Animations with style delay/remove/destroy api
+- component memoization with `thunk`
 
 ### Svelte 3
 
 Reversed engineered looking compiler output of various examples on Svelte website: (e.g. 7guis-crud, Lifecycle examples, )
+
+#### Internal Component shape
+
+_Svelte doesn't have a VNode shape_
+
+- `c`: create (build elements)
+- `l`: link (hydrate)
+- `h`: hook up attributes (used in hydrate mode to encapsulate setting attributes on nodes after `create` and `link` stages)
+- `m`: mount (connect created elements to DOM)
+- `p`: patch (update)
+- `d`: destroy (unmount)
+- `i`: in (for transitioning in components)
+- `o`: out (for transitioning out components)
 
 #### Mounting lifecycles
 
@@ -216,20 +229,122 @@ Manual DOM APIs?
 - Animation & transitions
 - Hydration support
 
-Other Internal Lifecycles:
-
-- `c`: create (build elements)
-- `l`: link (hydrate)
-- `h`: hook up attributes (used in hydrate mode to encapsulate setting attributes on nodes after `create` and `link` stages)
-- `m`: mount (connect created elements to DOM)
-- `p`: patch (update)
-- `d`: destroy (unmount)
-- `i`: in (for transitioning in components)
-- `o`: out (for transitioning out components)
-
 ### React 16
 
 Two-phase render: (1) render, (2) commit phases.
+
+#### VNode shape
+
+[ReactElement](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/6c625a1f0e727089814d03bcc75d6bddf1e82776/types/react/index.d.ts#L146):
+
+- `type`
+- `props`
+- `key`
+- `ref`
+
+[ReactFiber](https://github.com/facebook/react/blob/a600408b284e92ed3d801d7f4e37d10b5da06b10/packages/react-reconciler/src/ReactFiber.js#L129):
+
+<dl>
+  <dt><code>tag</code></dt>
+  <dd>
+    FunctionComponent, ClassComponent, HostComponent, etc.
+  </dd>
+  
+  <dt><code>key</code></dt>
+  <dd>
+    Unique identifier of this child
+  </dd>
+
+  <dt><code>elementType</code></dt>
+  <dd>
+    The value of element.type which is used to preserve the identity during reconciliation of this child.
+  </dd>
+
+  <dt><code>type</code></dt>
+  <dd>
+    The resolved function/class/ associated with this fiber.
+  </dd>
+
+  <dt><code>stateNode</code></dt>
+  <dd>
+    The local state associated with this fiber.
+  </dd>
+
+  <dt><code>return</code></dt>
+  <dd>
+    The Fiber to return to after finishing processing this one. This is effectively the parent, but there can be multiple parents (two) so this is only the parent of the thing we're currently processing. It is conceptually the same as the return address of a stack frame.
+  </dd>
+
+  <dt><code>child, sibling, index</code></dt>
+  <dd>
+    Singly Linked List Tree Structure.
+  </dd>
+
+  <dt><code>ref</code></dt>
+  <dd>
+    The ref last used to attach this node.
+  </dd>
+
+  <dt><code>pendingProps</code></dt>
+  <dd>
+    Input is the data coming into process this fiber. Arguments. Props.
+  </dd>
+
+  <dt><code>memoizedProps</code></dt>
+  <dd>
+    Input is the data coming into process this fiber. Arguments. Props. The props used to create the output.
+  </dd>
+
+  <dt><code>updateQueue</code></dt>
+  <dd>
+    A queue of state updates and callbacks
+  </dd>
+
+  <dt><code>memoizedState</code></dt>
+  <dd>
+    The state used to create the output
+  </dd>
+
+  <dt><code>dependencies</code></dt>
+  <dd>
+    Dependencies (contexts, events) for this fiber, if it has any
+  </dd>
+
+  <dt><code>mode</code></dt>
+  <dd>
+    Bitfield that describes properties about the fiber and its subtree. E.g. the ConcurrentMode flag indicates whether the subtree should be async-by-default. When a fiber is created, it inherits the mode of its parent. Additional flags can be set at creation time, but after that the value should remain unchanged throughout the fiber's lifetime, particularly before its child fibers are created.
+  </dd>
+
+  <dt><code>effectTag</code></dt>
+  <dd>
+    Effect
+  </dd>
+
+  <dt><code>nextEffect</code></dt>
+  <dd>
+    Singly linked list fast path to the next fiber with side-effects.
+  </dd>
+
+  <dt><code>firstEffect/lastEffect</code></dt>
+  <dd>
+    The first and last fiber with side-effect within this subtree. This allows us to reuse a slice of the linked list when we reuse the work done within this fiber.
+  </dd>
+
+  <dt><code>expirationTime</code></dt>
+  <dd>
+    Represents a time in the future by which this work should be completed. Does not include work found in its subtree.
+  </dd>
+
+  <dt><code>childExpirationTime</code></dt>
+  <dd>
+    This is used to quickly determine if a subtree has no pending changes.
+  </dd>
+
+  <dt><code>alternate</code></dt>
+  <dd>
+    This is a pooled version of a Fiber. Every fiber that gets updated will eventually have a pair. There are cases when we can clean up pairs to save memory if we need to.
+  </dd>
+</dl>
 
 #### Mounting Lifcycles
 
