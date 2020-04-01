@@ -2,7 +2,6 @@ Libraries to look at:
 
 - [solid-js](https://www.npmjs.com/package/solid-js)
 - [ivi](https://www.npmjs.com/package/ivi)
-- [inferno](https://www.npmjs.com/package/inferno)
 - [petit-dom](https://www.npmjs.com/package/petit-dom)
 - [hyperhtml](https://www.npmjs.com/package/hyperhtml)
 
@@ -228,6 +227,84 @@ Manual DOM APIs?
 - Style encapsulation
 - Animation & transitions
 - Hydration support
+
+### Inferno 7.4
+
+_Component lifecycles and VNode shape: https://git.io/Jv5xr_
+
+#### VNode shape
+
+- type: any;
+- props: any;
+- className: string | null | undefined;
+- key: null | number | string;
+- ref: any;
+- children: InfernoNode;
+- dom: Element | null;
+- flags: VNodeFlags;
+- childFlags: ChildFlags;
+- isValidated?: boolean;
+
+#### Mounting lifecycles
+
+- constructor
+- getDerivedStateFromProps
+- componentWillMount
+- render
+- componentDidMount
+
+#### Updating lifecycles
+
+- getDerivedStateFromProps
+- componentWillReceiveProps
+- shouldComponentUpdate
+- componentWillUpdate
+- render
+- getSnapshotBeforeUpdate
+- componentDidUpdate
+
+#### Destroy lifecycles
+
+- componentWillUnmount
+
+#### Error handling
+
+- None?
+
+#### Update methods
+
+- setState/forceUpdate
+
+#### Context API
+
+- getChildContext
+
+#### Direct DOM Access
+
+- React-style refs: `createRef` & Ref callbacks
+
+#### Other APIs
+
+- VNode perf flags:
+  - `$HasVNodeChildren?: boolean`
+  - `$HasNonKeyedChildren?: boolean;`
+  - `$HasKeyedChildren?: boolean;`
+  - `$ChildFlag?: number;`
+- Functional lifecycles (defined as props?)
+  - `onComponentDidMount?: (domNode: Element | null, nextProps: P) => void;`
+  - `onComponentWillMount?(): void;`
+  - `onComponentShouldUpdate?(lastProps: P, nextProps: P): boolean;`
+  - `onComponentWillUpdate?(lastProps: P, nextProps: P): void;`
+  - `onComponentDidUpdate?(lastProps: P, nextProps: P): void;`
+  `- onComponentWillUnmount?(domNode: Element, nextProps: P): void;`
+- Options interface
+  - `componentComparator: (lastVNode: VNode, nextVNode: VNode) => boolean`
+    - This option can be used during **development** to create custom component comparator method. This option will be called on every Component update. It gets two parameters: lastVNode and nextVNode. When it returns `true` lastVNode will be replaced with nextVNode. If anything else than `true` is returned it falls to normal behavior.
+  - `createVNode: (vNode: VNode) => void`
+    - Called when a new VNode is created
+  - `renderComplete: (rootInput: VNode, parentDOM: Element) => void`;
+    - Called after initial render
+  - `reactStyles?: boolean`
 
 ### React 16
 
