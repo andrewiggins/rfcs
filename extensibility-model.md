@@ -10,7 +10,7 @@ Others to consider:
 - [vue-next](https://github.com/vuejs/vue-next)
 - [domdiff](https://github.com/WebReflection/domdiff/blob/master/esm/index.js)
 
-Today's options
+Preact's options today
 
 ```ts
 interface Options {
@@ -148,6 +148,10 @@ Manually through global variables.
 
 Access through `vnode.elm` property in lifecycle hooks.
 
+#### Hydration
+
+- [`tovnode` function](https://www.npmjs.com/package/snabbdom#snabbdomtovnode) to convert DOM to VNode
+
 #### Other APIs
 
 - Animations with style delay/remove/destroy api
@@ -219,6 +223,10 @@ _Svelte doesn't have a VNode shape_
 
 Manual DOM APIs?
 
+#### Hydration
+
+- [`hydrate` option](https://svelte.dev/docs#Creating_a_component)
+
 #### Other APIs
 
 - `tick`: Returns a promise that resolves once any pending state changes have been applied, or in the next microtask if there are none.
@@ -282,6 +290,10 @@ _Component lifecycles and VNode shape: https://git.io/Jv5xr_
 #### Direct DOM Access
 
 - React-style refs: `createRef` & Ref callbacks
+
+#### Hydration
+
+- [`inferno-hydrate` package](https://www.npmjs.com/package/inferno-hydrate)
 
 #### Other APIs
 
@@ -472,6 +484,10 @@ Two-phase render: (1) render, (2) commit phases.
 - `forwardRef`
 - `useRef`
 
+#### Hydration
+
+- [`ReactDOM.hydrate`](https://reactjs.org/docs/react-dom.html#hydrate)
+
 #### Other APIs
 
 - SSR & hydration
@@ -544,9 +560,12 @@ Uses dependency injection pattern for this I think?
 
 - [Template reference variables](https://angular.io/guide/template-syntax#template-reference-variables-var)
 
+#### Hydration
+
+- [Server-side rendering with Angular Universal](https://angular.io/guide/universal#server-side-rendering-ssr-with-angular-universal)
+
 #### Other APIs
 
-- SSR & hydration
 - Lazily loading ngModules
 - Animation & transitions
 - Routing
@@ -641,10 +660,13 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
 
 - [Refs](https://vuejs.org/v2/api/#ref)
 
+#### Hydration
+
+- `app.$mount('#app', true)`: [SSR & hydration](https://ssr.vuejs.org/guide/hydration.html)
+
 #### Other APIs
 
 - `vm.$nextTick`
-- [SSR & hydration](https://ssr.vuejs.org/guide/hydration.html)
 - Style encapsulation
 - Mixins
 - Templates & render functions
