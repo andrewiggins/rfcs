@@ -1,5 +1,6 @@
 Libraries to look at:
 
+- [domvm](https://github.com/domvm/domvm/)
 - [solid-js](https://www.npmjs.com/package/solid-js)
 - [ivi](https://www.npmjs.com/package/ivi)
 - [petit-dom](https://www.npmjs.com/package/petit-dom)
@@ -8,7 +9,8 @@ Libraries to look at:
 Others to consider:
 
 - [vue-next](https://github.com/vuejs/vue-next)
-- [domdiff](https://github.com/WebReflection/domdiff/blob/master/esm/index.js)
+- [domdiff](https://github.com/WebReflection/domdiff/blob/master/esm/index.js
+- [surplus]()
 
 Preact's options today
 
