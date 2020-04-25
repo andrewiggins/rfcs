@@ -24,3 +24,12 @@ export { createRoot };
 
 Might be somewhat possible if `createRoot` mixes the global options
 with the passed in options.
+
+## ReplaceNode
+
+Specify replaceNode once in `createRoot` options (renamed to `rootChild`) and call render or hydrate like normal.
+
+```js
+let root = createRoot(container, { rootChild: container.lastChild });
+root.render(<App />);
+```
