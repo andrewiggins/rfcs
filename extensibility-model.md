@@ -58,6 +58,7 @@ interface InternalOptions {
 - Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
 - Consider experimenting if refs can be added as an extension
 - Controlled inputs (another, perhaps better? implementation would be to improve `options.event` callback)
+- Think about way for different component models to hook into devtools and prefresh
 
 ## Other Component models
 
