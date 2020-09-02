@@ -6,12 +6,6 @@ Libraries to look at:
 - [petit-dom](https://www.npmjs.com/package/petit-dom)
 - [hyperhtml](https://www.npmjs.com/package/hyperhtml)
 
-Others to consider:
-
-- [vue-next](https://github.com/vuejs/vue-next)
-- [domdiff](https://github.com/WebReflection/domdiff/blob/master/esm/index.js
-- [surplus]()
-
 Preact's options today
 
 ```ts
@@ -54,7 +48,7 @@ interface InternalOptions {
 - [Hooks API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/hooks/src/index.js)
 - [Composition API components](https://github.com/preactjs/preact/pull/1923)
 - [Flow components](https://github.com/jviide/flowponent)
-- Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/hero.ts))
+- Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/45563ae968e84b8a5aea1dfc6774d029e7de16c3/src/package/modules/hero.ts))
 - Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
 - Consider experimenting if refs can be added as an extension
 - Controlled inputs (another, perhaps better? implementation would be to improve `options.event` callback)
@@ -76,6 +70,7 @@ interface InternalOptions {
 #### Mounting lifecycles
 
 <dl>
+
   <dt><code>init</code></dt>
   <dd>
     A vnode has been added. Available on vnodes only. Args: <code>(vnode)</code>
@@ -90,11 +85,13 @@ interface InternalOptions {
   <dd>
     An element has been inserted into the DOM. Available on vnodes only. Args: <code>(vnode)</code>
   </dd>
+
 </dl>
 
 #### Updating lifecycles
 
 <dl>
+
   <dt><code>pre</code></dt>
   <dd>
     The patch process begins. Available at module scope only. Args: <code>()</code>
@@ -119,11 +116,13 @@ interface InternalOptions {
   <dd>
     The patch process is done. Available on module-scope only. Args: <code>()</code>
   </dd>
+
 </dl>
 
 #### Destroy lifecycles
 
 <dl>
+
   <dt><code>destroy</code></dt>
   <dd>
     An element is directly or indirectly being removed. Available on module-scope and vnodes. Args: <code>(vnode)</code>
@@ -133,6 +132,7 @@ interface InternalOptions {
   <dd>
     An element is directly being removed from the DOM. Available on module-scope and vnodes. Args: <code>(vnode, removeCallback)</code>
   </dd>
+
 </dl>
 
 #### Error handling
@@ -189,6 +189,7 @@ _Svelte doesn't have a VNode shape_
 #### Updating lifecycles
 
 <dl>
+
   <dt><code>beforeUpdate</code></dt>
   <dd>
     Schedules a callback to run immediately before the component is updated after any state change.
@@ -198,6 +199,7 @@ _Svelte doesn't have a VNode shape_
   <dd>
     Schedules a callback to run immediately after the component has been updated.
   </dd>
+
 </dl>
 
 #### Destroy lifecycles
@@ -311,7 +313,7 @@ _Component lifecycles and VNode shape: https://git.io/Jv5xr_
   - `onComponentShouldUpdate?(lastProps: P, nextProps: P): boolean;`
   - `onComponentWillUpdate?(lastProps: P, nextProps: P): void;`
   - `onComponentDidUpdate?(lastProps: P, nextProps: P): void;`
-  `- onComponentWillUnmount?(domNode: Element, nextProps: P): void;`
+    `- onComponentWillUnmount?(domNode: Element, nextProps: P): void;`
 - Options interface
   - `componentComparator: (lastVNode: VNode, nextVNode: VNode) => boolean`
     - This option can be used during **development** to create custom component comparator method. This option will be called on every Component update. It gets two parameters: lastVNode and nextVNode. When it returns `true` lastVNode will be replaced with nextVNode. If anything else than `true` is returned it falls to normal behavior.
@@ -436,6 +438,7 @@ Two-phase render: (1) render, (2) commit phases.
   <dd>
     This is a pooled version of a Fiber. Every fiber that gets updated will eventually have a pair. There are cases when we can clean up pairs to save memory if we need to.
   </dd>
+
 </dl>
 
 #### Mounting Lifcycles
@@ -493,7 +496,6 @@ Two-phase render: (1) render, (2) commit phases.
 
 #### Other APIs
 
-- SSR & hydration
 - Lazy loading through `Suspense`, `lazy`
 - Delay rendering update with `useTransition`
 
@@ -504,6 +506,7 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
 #### Mounting lifecycles
 
 <dl>
+
   <dt><code>ngOnInit</code></dt>
   <dd>
     Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component's input properties.
@@ -518,6 +521,7 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
   <dd>
     Respond after Angular initializes the component's views and child views / the view that a directive is in.
   </dd>
+
 </dl>
 
 #### Updating lifecycles
@@ -538,6 +542,7 @@ _Other Angular sub-systems may have their own lifecycle hooks apart from these c
   
   <dt><code>ngAfterViewChecked</code></dt>
   <dd>Respond after Angular checks the component's views and child views / the view that a directive is in.</dd>
+  
 </dl>
 
 #### Destroy lifecycles
@@ -580,9 +585,12 @@ Uses dependency injection pattern for this I think?
 
 Mostly taken from https://angular.io/guide/lifecycle-hooks
 
+For Vue 3, check out the composition API: https://v3.vuejs.org/guide/composition-api-lifecycle-hooks.html
+
 #### Mounting lifecycles
 
 <dl>
+
   <dt><code>beforeCreate</code></dt>
   <dd>
     Called synchronously immediately after the instance has been initialized, before data observation and event/watcher setup.
@@ -602,11 +610,13 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
   <dd>
     Called after the instance has been mounted, where el is replaced by the newly created vm.$el. If the root instance is mounted to an in-document element, vm.$el will also be in-document when mounted is called.
   </dd>
+
 </dl>
 
 #### Updating lifecycles
 
 <dl>
+
   <dt><code>beforeUpdate</code></dt>
   <dd>
     Called when data changes, before the DOM is patched.
@@ -626,11 +636,13 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
   <dd>
     Called when a kept-alive component is deactivated.
   </dd>
+
 </dl>
 
 #### Destroy lifecycles
 
 <dl>
+
   <dt><code>beforeDestroy</code></dt>
   <dd>
     Called right before a Vue instance is destroyed. At this stage the instance is still fully functional.
@@ -640,6 +652,7 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
   <dd>
     Called after a Vue instance has been destroyed. When this hook is called, all directives of the Vue instance have been unbound, all event listeners have been removed, and all child Vue instances have also been destroyed.
   </dd>
+
 </dl>
 
 #### Error handling
@@ -674,3 +687,225 @@ Mostly taken from https://angular.io/guide/lifecycle-hooks
 - Mixins
 - Templates & render functions
 - Observables
+
+## Summary
+
+### VNode Structure
+
+- `type`: inferno, react
+- `props`: snabbdom, inferno, react
+- `key`: snabbdom, inferno, react
+- `ref`: inferno, react
+- `children`: snabbdom, inferno
+- `dom`: snabbdom, inferno
+- `text`: snabbdom
+
+React exposes children through Fiber properties `return`, `child`, `sibling`, etc.
+
+### Lifecycles
+
+#### Construction
+
+Constructing a component for the first time before the component is mounted
+
+- snabbdom: init
+- inferno: constructor
+- react: constructor
+- vue: beforeCreate, created
+- angular: ngOnInit, ngAfterContentInit, ngAfterViewInit
+
+#### Mounting
+
+DOM is being manipulated now
+
+- snabbdom: create (dom), insert (dom)
+- svelte: onMount
+- inferno: cWM, render, cDM
+- react: cDM, useLayoutEffect, useEffect
+- vue: beforeMount, mounted
+- angular: doCheck, ngAfterContentChecked, ngAfterViewChecked
+
+#### Updating/patching
+
+- snabbdom: pre (global), prepatch (vnode), update (vnode), postpatch (vnode), post (global)
+- svelte: beforeUpdate, afterUpdate
+- inferno: gDSFP, cWRP, cWU, gSBU, cDU
+- react: gDSFP, gSBU, cDU, useLayoutEffect, useEffect
+- vue: beforeUpdate, updated, activated, deactivated
+- angular: doCheck, ngAfterContentChecked, ngAfterViewChecked
+
+#### Update bailout
+
+- inferno: sCU
+- react: sCU, memo
+
+#### Unmounting
+
+- snabbdom: destroy (every child), remove (dom parent removal with callback)
+- svelte: onDestroy
+- inferno: cWU
+- react: cWU, useLayoutEffect, useEffect
+- vue: beforeDestory, destroyed
+- angular: ngOnDestroy
+
+### Error handling
+
+- try/catch: snabbdom, svelte?
+- lifecycle: react, vue
+
+### Update methods
+
+<dl>
+
+  <dt>rerender from root</dt>
+  <dd>snabbdom</dd>
+
+  <dt>reactive</dt>
+  <dd>svelte</dd>
+  <dd>vue</dd>
+
+  <dt>update function</dt>
+  <dd>inferno: setState, forceUpdate</dd>
+  <dd>react: setState, forceUpdate, useState, useReducer</dd>
+
+  <dt>dirty checking</dt>
+  <dd>angular</dd>
+
+</dl>
+
+### Context API
+
+<dl>
+
+  <dt>global vars</dt>
+  <dd>snabbdom</dd>
+
+  <dt>explict API<dt>
+  <dd>svelte: setContext, getContext</dd>
+  <dd>inferno: getChildContext</dd>
+  <dd>react: createContext, useContext</dd>
+  <dd>angular: dependency injection</dd>
+  <dd>vue: provide/inject DI</dd>
+
+</dl>
+
+### Direct DOM Access
+
+- vnode property: snabbdom
+- Manual dom api: svelte
+- Template/JSX refs: inferno, react, angular, vue
+
+### Hydration
+
+- converts DOM to vnodes: snabbdom
+- hydrate compile option: svelte
+- hydrate runtime function: inferno, react, angular, vue
+
+## Proposal
+
+### Internal shape
+
+- type
+- props
+- key
+- ref
+
+Proposals
+
+- state: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue compositions)
+- cbs: Array of callbacks to invoke in commit phase
+
+To consider...
+
+- parent? - necessary for error handling
+- children? - necessary for things like Suspense?
+- dom?
+
+### VNode shape
+
+- type
+- props
+- props.children
+
+### Diff Options
+
+- `render(internal, vnode, sharedContext, renderer): VNode | VNode[]`
+- `unmount(internal)` (see notes in Unmounting section below)
+
+To Consider (see notes in sections below):
+
+- `thrown(error, internal, vnode)`
+
+- `commit(rootInternal, commitQueue)`
+  I think this was only necessary so hooks could invoke all cleanups first, and then used the presence of the `_value` property to determine if callback was actually a hook. Need a better way to do this. However, it almost maps to snabbdom's `post` which is nice (currently `commit` is a `beforeCommit` option). Do we need a `before/afterCommit` option or should `commit` call itself (i.e. middleware)?
+
+#### Construction
+
+- beforeCreate:
+
+#### Mounting
+
+- beforeMount: In `render` option, detect if `internal.state` is null
+- afterMount: `internal.cbs.push(callback)`
+
+#### Updating
+
+- beforeUpdate: In `render` option detect if `internal.state` is not null
+- afterUpdate: `internal.cbs.push(callback)`
+
+#### Bailout
+
+Return the same VNodes from `render` as the previous render (i.e. memoize your render option)
+
+#### Unmounting
+
+Use `options.unmount` to operate on an unmounting component and do any cleanup
+
+To Consider:
+
+- beforeUnmount?
+- afterUnmount?
+- wrap unmount and recursively call itself?
+
+### Error handling
+
+`thrown(error, internal, vnode)`
+
+Necessary for custom error handling APIs in custom components, and things like Suspense
+
+### Update methods
+
+To trigger rerender, call `renderer.render(internal)`.
+
+### Context API
+
+`sharedContext` passed to `options.render` is shared object between all components. Use with caution!
+
+### Direct DOM Access
+
+TODO: do refs need to be built into the diff itself?
+
+### Hydration
+
+TODO: Do we need to expose our hydration mode as a public API? Hopefully not
+
+### Other thoughts
+
+#### Two-phase render
+
+Would be important to decide on if our render is two phase or not before building this API. One upside is that it makes it easy to do `before/afterCommit/commit` options for DOM updates but delaying prop updates may be kinda tricky?
+
+Do we need `before/afterCommit` callback options on internals? If the internal is scheduled for commit (how do we tell this?) do we need the callback options at all or can we just invoke the options with each internal?
+
+#### Verify component model
+
+- [Class component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/component.js#L13)
+- [Function component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/diff/index.js#L450)
+- [Hooks API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/hooks/src/index.js)
+- Suspense
+- Other compat plugins
+- [Composition API components](https://github.com/preactjs/preact/pull/1923)
+- Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/45563ae968e84b8a5aea1dfc6774d029e7de16c3/src/package/modules/hero.ts))
+- Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
+- Some sort of reactive component based on Vue reactivity
+- Some sort of reactive component based on Mobx reactivity
