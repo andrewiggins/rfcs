@@ -1,10 +1,11 @@
-Libraries to look at:
+Other libraries to consider investigating:
 
 - [domvm](https://github.com/domvm/domvm/)
 - [solid-js](https://www.npmjs.com/package/solid-js)
 - [ivi](https://www.npmjs.com/package/ivi)
 - [petit-dom](https://www.npmjs.com/package/petit-dom)
 - [hyperhtml](https://www.npmjs.com/package/hyperhtml)
+- ember
 
 Preact's options today
 
@@ -803,7 +804,7 @@ DOM is being manipulated now
 
 ## Proposal
 
-### Internal shape
+### Public "Internal" shape
 
 - type
 - props
@@ -812,7 +813,7 @@ DOM is being manipulated now
 
 Proposals
 
-- state: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue compositions)
+- state: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue-like compositions)
 - cbs: Array of callbacks to invoke in commit phase
 - skip: An opaque value that signals to the diff that rerendering this internal should be skipped (see Bailout section below)
 
@@ -820,13 +821,14 @@ To consider...
 
 - parent? - necessary for error handling
 - children? - necessary for things like Suspense?
-- dom?
+- dom? - not yet sure what the use case here is
 
-### VNode shape
+### Public VNode shape
 
 - type
 - props
 - props.children
+- constructor: undefined
 
 ### Diff Options
 
@@ -838,21 +840,23 @@ To Consider (see notes in sections below):
 - `thrown(error, internal, vnode)`
 
 - `commit(rootInternal, commitQueue)`
-  I think this was only necessary so hooks could invoke all cleanups first, and then used the presence of the `_value` property to determine if callback was actually a hook. Need a better way to do this. However, it almost maps to snabbdom's `post` which is nice (currently `commit` is a `beforeCommit` option). Do we need a `before/afterCommit` option or should `commit` call itself (i.e. middleware)?
+  I think this was only necessary so hooks could invoke all cleanups first, and then used the presence of the `_value` property to determine if callback was actually a hook. Need a better way to do this. However, it almost maps to snabbdom's `post` which is nice. Currently `commit` is a `beforeCommit` option. Do we need a `before/afterCommit` option or should `commit` call itself (i.e. middleware)?
 
 #### Construction
 
-- beforeCreate:
+- beforeCreate: In `render` option, detect if `internal.state` is null
+- afterCreate: `render` option could implement itself after it constructs its component
 
 #### Mounting
 
-- beforeMount: In `render` option, detect if `internal.state` is null
-- afterMount: `internal.cbs.push(callback)`
+- beforeMount: In `render` option, detect if `internal.state` is null or could have a `beforeCommit` hook
+- afterMount: `internal.cbs.push(callback)` or add a `afterCommit` hook
 
 #### Updating
 
 - beforeUpdate: In `render` option detect if `internal.state` is not null
 - afterUpdate: `internal.cbs.push(callback)`
+- Need to define how these interact with bailout
 
 #### Bailout
 
@@ -878,19 +882,21 @@ Necessary for custom error handling APIs in custom components, and things like S
 
 ### Update methods
 
-To trigger rerender, call `renderer.render(internal)`.
+To queue rerender, call `renderer.render(internal)`. Our rerenders are always be queued and batched
+
+TODO: Need to ensure there is a way to invoke a callback after this rerender has occurred.
 
 ### Context API
 
-`sharedContext` passed to `options.render` is shared object between all components. Use with caution!
+`sharedContext` passed to `options.render` is shared object between all components. Components can use symbols or unique names to avoid collisions.
 
 ### Direct DOM Access
 
-TODO: do refs need to be built into the diff itself?
+TODO: do refs need to be built into the diff itself? Probably. Need to define their behavior.
 
 ### Hydration
 
-TODO: Do we need to expose our hydration mode as a public API? Hopefully not
+TODO: Do we need to expose our hydration mode as a public API? Hopefully not 😬
 
 ### Other thoughts
 
