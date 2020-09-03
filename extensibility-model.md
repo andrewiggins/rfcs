@@ -802,9 +802,20 @@ DOM is being manipulated now
 - hydrate compile option: svelte
 - hydrate runtime function: inferno, react, angular, vue
 
+
+## Goal
+
+In order to keep preact/core lean, I'd like to consider we only build minimal component support into core (no react lifecycle, no hooks). This change means we need a good public options API for building component extensions. This document is one WIP proposal at what that API might look like.
+
+I'd imagine core would have some very basic support for basic function components if no other extensions handles the component first (perhaps something similar to [little-vdom](https://gist.github.com/marvinhagemeister/8950b1032d67918d21950b3985259d78#file-little-vdom-decompiled-js-L46)?)
+
+I'd think the `preact` npm package would auto-include support for class component so that existing apps can easily can migrate over.
+
 ## Proposal
 
 ### Public "Internal" shape
+
+We need to expose some properties publicly on the Internal so that Preact extensions can operate on it.
 
 - type
 - props
@@ -813,13 +824,13 @@ DOM is being manipulated now
 
 Proposals
 
-- state: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue-like compositions)
-- cbs: Array of callbacks to invoke in commit phase
-- skip: An opaque value that signals to the diff that rerendering this internal should be skipped (see Bailout section below)
+- `state`: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue-like compositions). We currently call this `_component`. Was thinking if we make it public perhaps renaming it to a smaller name like `state` might save us some bytes. If we are successful in abstracting the component model, we shouldn't actually use this property in core (except maybe in our minimal component impl like little-vdom).
+- `skip`: An opaque value that signals to the diff that rerendering this internal should be skipped (see Bailout section below)
 
 To consider...
 
-- parent? - necessary for error handling
+- cbs: Array of callbacks to invoke in commit phase (Copied this from Preact, but maybe this is an implementation detail of the component extension?)
+- parent? - necessary for error handling I think
 - children? - necessary for things like Suspense?
 - dom? - not yet sure what the use case here is
 
@@ -830,17 +841,17 @@ To consider...
 - props.children
 - constructor: undefined
 
-### Diff Options
+### Extension Options
 
-- `render(internal, vnode, sharedContext, renderer): VNode | VNode[]`
-- `unmount(internal)` (see notes in Unmounting section below)
+- `options.render(internal, vnode, sharedContext, renderer): VNode`
+- `options.unmount(internal)` (see notes in Unmounting section below)
 
 To Consider (see notes in sections below):
 
-- `thrown(error, internal, vnode)`
+- `options.thrown(error, internal, vnode)`
 
-- `commit(rootInternal, commitQueue)`
-  I think this was only necessary so hooks could invoke all cleanups first, and then used the presence of the `_value` property to determine if callback was actually a hook. Need a better way to do this. However, it almost maps to snabbdom's `post` which is nice. Currently `commit` is a `beforeCommit` option. Do we need a `before/afterCommit` option or should `commit` call itself (i.e. middleware)?
+- `optinos.commit(rootInternal, commitQueue)`
+  I think this was only necessary so hooks could invoke all cleanups first, and then hooks used the presence of the `_value` property to determine if callback was actually a hook. Probably need a better way to do this. However, it almost maps to snabbdom's `post` which is nice. Currently `commit` is a `beforeCommit` option. Do we need a `before/afterCommit` option or should `commit` call itself (i.e. middleware)?
 
 #### Construction
 
@@ -850,19 +861,19 @@ To Consider (see notes in sections below):
 #### Mounting
 
 - beforeMount: In `render` option, detect if `internal.state` is null or could have a `beforeCommit` hook
-- afterMount: `internal.cbs.push(callback)` or add a `afterCommit` hook
+- afterMount: `internal.cbs.push(callback)` or add a `afterCommit` hook?
 
 #### Updating
 
 - beforeUpdate: In `render` option detect if `internal.state` is not null
-- afterUpdate: `internal.cbs.push(callback)`
+- afterUpdate: `internal.cbs.push(callback)` or add a `afterCommit` hook?
 - Need to define how these interact with bailout
 
 #### Bailout
 
 Return the same VNodes from `render` as the previous render (i.e. memoize your render option). One downside of this approach is that it requires holding on to previous VNodes between rerenders which likely increases GC pressure.
 
-An alternative approach could be to expose an opaque value on each `internal` when returned from `options.render` means that rerendering the children of this component should be skipped. Physically, this could be the previous vnode children to do vnode equality, or could be some special value (Symbol, VNode ID or something like EMPTY_OBJ) to signal that rerendering children should be skipped.
+An alternative approach could be to expose an opaque value on each `internal` when returned from `options.render` that means that rerendering the children of this component should be skipped. Physically, this could be the previous vnode children to do vnode equality, or could be some special value (Symbol, VNode ID or something like EMPTY_OBJ) to signal that rerendering children should be skipped.
 
 #### Unmounting
 
@@ -907,6 +918,8 @@ Would be important to decide on if our render is two phase or not before buildin
 Do we need `before/afterCommit` callback options on internals? If the internal is scheduled for commit (how do we tell this?) do we need the callback options at all or can we just invoke the options with each internal?
 
 #### Verify component model
+
+Try implementing each of these using these extension methods to verify it is broad enough to cover various use cases.
 
 - [Class component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/component.js#L13)
 - [Function component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/diff/index.js#L450)
