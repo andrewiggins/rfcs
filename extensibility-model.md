@@ -814,6 +814,7 @@ Proposals
 
 - state: Generic property to hold any state for component model (e.g. class instance, function hook state, Vue compositions)
 - cbs: Array of callbacks to invoke in commit phase
+- skip: An opaque value that signals to the diff that rerendering this internal should be skipped (see Bailout section below)
 
 To consider...
 
@@ -855,7 +856,9 @@ To Consider (see notes in sections below):
 
 #### Bailout
 
-Return the same VNodes from `render` as the previous render (i.e. memoize your render option)
+Return the same VNodes from `render` as the previous render (i.e. memoize your render option). One downside of this approach is that it requires holding on to previous VNodes between rerenders which likely increases GC pressure.
+
+An alternative approach could be to expose an opaque value on each `internal` when returned from `options.render` means that rerendering the children of this component should be skipped. Physically, this could be the previous vnode children to do vnode equality, or could be some special value (Symbol, VNode ID or something like EMPTY_OBJ) to signal that rerendering children should be skipped.
 
 #### Unmounting
 
