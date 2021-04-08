@@ -48,7 +48,20 @@ interface InternalOptions {
 - [Function component API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/src/diff/index.js#L450)
 - [Hooks API](https://github.com/preactjs/preact/blob/ca42c53210db925fe14d8f0f9122eb3bf43556d7/hooks/src/index.js)
 - [Composition API components](https://github.com/preactjs/preact/pull/1923)
+- A component model like:
+  ```js
+  function Foo(props) {
+    const a = value(props.a)
+    const add = value.update(a, a => a+1);
+    return props => (
+      <button onClick={add}>{a}</button>
+    )
+  }
+  ```
+- Something, something MobX
+- How can these interact & and cooperate? For example, calling hooks from class components
 - [Flow components](https://github.com/jviide/flowponent)
+- A `useProvider` hook instead of `<Provider>` to validate our context extensibility
 - Snabbdom Hero module ([sample](http://snabbdom.github.io/snabbdom/examples/hero/), [code](https://github.com/snabbdom/snabbdom/blob/45563ae968e84b8a5aea1dfc6774d029e7de16c3/src/package/modules/hero.ts))
 - Snabbdom delayed/removed style attribute extension ([sample](http://snabbdom.github.io/snabbdom/examples/reorder-animation/), [code](https://github.com/snabbdom/snabbdom/blob/master/src/modules/style.ts))
 - Consider experimenting if refs can be added as an extension
